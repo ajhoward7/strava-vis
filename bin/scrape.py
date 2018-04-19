@@ -65,7 +65,7 @@ if __name__ == '__main__':
 
     print("Obtaining activity data...")
 
-    activities = client.get_activities(limit=2000)
+    activities = client.get_activities(limit=200)
     with open(ALL_ACTS_JSON, 'w') as f:
         f.write(json.dumps(activities, indent=4))
 
@@ -77,4 +77,4 @@ if __name__ == '__main__':
         a = client.get_latlng(a_id)
         all_activites.append(a)
     with open(LATLNG_ACTS_JSON, 'w') as f:
-        f.write(json.dumps(ll_activites, indent=4))
+        f.write(json.dumps(all_activites, indent=4))
