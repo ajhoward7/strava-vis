@@ -41,7 +41,9 @@ def home():
     print('got here')
     r = requests.post('https://www.strava.com/oauth/token', data={'client_id':client_id, 'client_secret':client_secret, 'code':code})
     print('here')
-    access_token = json.loads(r.json()["access_token"])
+    json_data = json.loads(r._content)
+    access_token = json_data["access_token"]
+    print('h')
     username = scrape_activities(access_token)
 
     return redirect('/{}'.format(username))
