@@ -136,8 +136,9 @@ def google_example():
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    return render_template('index.html',
-                           authenticated_user=current_user.is_authenticated)
+    return '<a href=https://www.strava.com/oauth/authorize>Authorisation</a>'
+    #return render_template('index.html',
+                     #      authenticated_user=current_user.is_authenticated)
 
 
 if __name__ == '__main__':
