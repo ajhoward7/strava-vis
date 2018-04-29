@@ -47,16 +47,15 @@ class StravaRequestor():
         params['page'] = 0
         total = 0
         activities = []
+
+        user_json = requests.get('https://www.strava.com/api/v3/athlete', params=params).json()
+        print(user_json)
+
         while total < limit:
             params['page'] += 1
             total += params['per_page']
-            total+=300
             try:
-                r = requests.get('https://www.strava.com/api/v3/athlete', params=params)
-                print(r.__dict__)
-                print(r.json()['weight'])
                 r = requests.get('{}activities'.format(self.base_url), params=params)
-                print(r.__dict__)
                 activities += r.json()
             except:
                 print("Reached Limit Number of activites")
