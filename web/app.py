@@ -145,7 +145,7 @@ def index():
     #return render_template('index.html',
                      #      authenticated_user=current_user.is_authenticated)
 
-@app.route('/authorize', methods=('POST'))
+@app.route('/authorize', methods=['POST'])
 def home():
     code = request.args.get('code')
     r = requests.post('https://www.strava.com/oauth/token', data={'client_id':client_id, 'client_secret':client_secret, 'code':code})
