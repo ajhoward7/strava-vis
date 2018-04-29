@@ -38,7 +38,9 @@ def plotly_example():
 @app.route('/authorize', methods=('GET','POST'))
 def home():
     code = request.args.get('code')
+    print('got here')
     r = requests.post('https://www.strava.com/oauth/token', data={'client_id':client_id, 'client_secret':client_secret, 'code':code})
+    print('here')
     access_token = json.loads(r.json()["access_token"])
     username = scrape_activities(access_token)
 
