@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from flask import Flask, redirect, render_template, url_for, flash
+from flask import Flask, redirect, render_template, url_for, flash, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from flask_login import (current_user, LoginManager, login_required,
@@ -12,6 +12,8 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from plotly_example import plotly_map
+
+from scrape import scrape_activities
 
 # Create and configure an app.
 app = Flask(__name__)
@@ -136,10 +138,16 @@ def google_example():
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    url = 'https://www.strava.com/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2F34.216.241.15%2Fregister&client_id=20812'
+    url = 'https://www.strava.com/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2F34.216.241.15%2Fhome&client_id=20812'
     return '<a href={}>Authorisation</a>'.format(url)
     #return render_template('index.html',
                      #      authenticated_user=current_user.is_authenticated)
+
+@app.route('/home', methods=('GET','POST'))
+def home():
+    access_token = request.args.get('code')
+    scrape_activities(access_token)
+    return "Got here, did the data appear?"
 
 
 if __name__ == '__main__':
