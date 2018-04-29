@@ -149,7 +149,7 @@ def index():
 def home():
     code = request.args.get('code')
     r = requests.post('https://www.strava.com/oauth/token', data={'client_id':client_id, 'client_secret':client_secret, 'code':code})
-    access_token = r._content["access_token"]
+    print(dict(r._content))
     scrape_activities(access_token)
     return "Got here, did the data appear?"
 
