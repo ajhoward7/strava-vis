@@ -5,6 +5,7 @@ import math
 import plotly.plotly  as py
 import plotly.graph_objs as go
 import json
+import plotly
 
 metres_mile = 1609.34
 workout_type_dict = {0:'Run',1:'Race',2:'Long Run',3:'Workout'}
