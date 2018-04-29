@@ -159,6 +159,8 @@ def process_activities(username):
                                        right_on=['week_start', 'workout_type'], how='left',
                                        suffixes=('', '_{}'.format(activities_df.workout_type.unique()[i])))
 
+    if 'miles_Long Run' not in by_week_activity_df.columns:
+        by_week_activity_df['miles Long Run'] = 0
     by_week_activity_df = by_week_activity_df[['week_start', 'miles', 'miles_Workout', 'miles_Long Run', 'miles_Race']]
     by_week_activity_df.columns = ['week_start', 'miles_Run', 'miles_Workout', 'miles_Long Run', 'miles_Race']
     by_week_activity_df.fillna(0, inplace=True)
