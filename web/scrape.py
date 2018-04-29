@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 
 from credentials import access_token as TOKEN
 from constants import ALL_ACTS_JSON, LATLNG_ACTS_JSON
@@ -48,9 +49,6 @@ class StravaRequestor():
         total = 0
         activities = []
 
-        user_json = requests.get('https://www.strava.com/api/v3/athlete', params=params).json()
-        print(user_json)
-
         while total < limit:
             params['page'] += 1
             total += params['per_page']
@@ -63,26 +61,35 @@ class StravaRequestor():
 
         return activities
 
+    def get_user(self):
+        return requests.get('https://www.strava.com/api/v3/athlete', params=params).json()
+
+
 
 def scrape_activities(access_token):
 
     client = StravaRequestor(access_token)
 
+    user = client.get_user()
+
+    username = user["firstname"] + '_' + user["lastname"]
+
     print("Obtaining activity data...")
 
     activities = client.get_activities(limit=200)
-    with open(ALL_ACTS_JSON, 'w') as f:
+
+    if not os.path.exists(username):
+        os.makedirs(username)
+
+    with open('{}/activities.json'.format(username), 'w') as f:
         f.write(json.dumps(activities, indent=4))
 
+    with open('{}/user_profile.json'.format(username),'w') as f:
+        f.write(json.dumps(user, indent=4))
 
-if __name__ == '__main__':
-    client = StravaRequestor(TOKEN)
+    with open('scraped_users','w+') as f:
+        f.write('{}\n'.format(username))
 
-    print("Obtaining activity data...")
-
-    activities = client.get_activities(limit=20)
-    with open(ALL_ACTS_JSON, 'w') as f:
-        f.write(json.dumps(activities, indent=4))
 
     # ids = get_ids()
     # all_activites = []
