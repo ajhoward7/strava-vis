@@ -12,7 +12,7 @@ class StravaRequestor():
 
     def __init__(self):
         self.params = {}
-        self.params['access_token'] = TOKEN
+        self.params['access_token'] = '3162d882468859cf6c3afb71b734a22d95e24c17'
         self.base_url = 'https://www.strava.com/api/v3/'
 
     def get_activity(self, activity_id):
@@ -43,15 +43,17 @@ class StravaRequestor():
         Gets the short activity details and dumps to file
         """
         params = self.params.copy()  # we're editing this so make a copy
-        params['per_page'] = min(limit, 200)  # 200 is max number of activities we can load in a page
-        params['page'] = 0
+        #params['per_page'] = min(limit, 200)  # 200 is max number of activities we can load in a page
+        #params['page'] = 0
         total = 0
         activities = []
         while total < limit:
-            params['page'] += 1
-            total += params['per_page']
+            #params['page'] += 1
+            #total += params['per_page']
+            total+=30
             try:
-                r = requests.get('{}activities'.format(self.base_url), params=params)
+                print("got here")
+                r = requests.get('https://www.strava.com/api/v3/athlete', params=params)
                 activities += r.json()
             except:
                 print("Reached Limit Number of activites")
@@ -69,12 +71,12 @@ if __name__ == '__main__':
     with open(ALL_ACTS_JSON, 'w') as f:
         f.write(json.dumps(activities, indent=4))
 
-    ids = get_ids()
-    all_activites = []
+    #ids = get_ids()
+    #all_activites = []
 
-    print("Obtaining Lat-Long data...")
-    for a_id in ids:
-        a = client.get_latlng(a_id)
-        all_activites.append(a)
-    with open(LATLNG_ACTS_JSON, 'w') as f:
-        f.write(json.dumps(all_activites, indent=4))
+    # print("Obtaining Lat-Long data...")
+    # for a_id in ids:
+    #     a = client.get_latlng(a_id)
+    #     all_activites.append(a)
+    # with open(LATLNG_ACTS_JSON, 'w') as f:
+    #     f.write(json.dumps(all_activites, indent=4))
