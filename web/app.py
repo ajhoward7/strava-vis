@@ -20,10 +20,6 @@ import json
 
 # Create and configure an app.
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///week5.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-login_manager = LoginManager()
 bootstrap = Bootstrap(app)
 
 
