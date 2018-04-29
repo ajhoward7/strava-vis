@@ -54,6 +54,7 @@ class StravaRequestor():
             try:
                 r = requests.get('https://www.strava.com/api/v3/athlete', params=params)
                 print(r.__dict__)
+                print(r.json())
                 #r = requests.get('{}activities'.format(self.base_url), params=params)
                 activities += r.json()
             except:
