@@ -38,7 +38,7 @@ def process_activities(username):
     for i in range(len(activities_df)):
         row = activities_df.iloc[i,]
         activities_text.append('{}<br>{}<br>'.format(row['name'].encode('ascii', 'ignore'),
-                                                     row['date']) + '{:.1f} miles<br>{:.2f} seconds/mile'.format(
+                                                     row['date'].date()) + '{:.1f} miles<br>{:.2f} seconds/mile'.format(
             row['miles'], row['pace_mile']))
 
     activities_df['text'] = activities_text
