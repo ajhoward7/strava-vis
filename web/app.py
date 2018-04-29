@@ -14,6 +14,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from plotly_example import plotly_map
 
 from scrape import scrape_activities
+from credentials import client_id, client_secret
+import requests
 
 # Create and configure an app.
 app = Flask(__name__)
@@ -143,10 +145,12 @@ def index():
     #return render_template('index.html',
                      #      authenticated_user=current_user.is_authenticated)
 
-@app.route('/home', methods=('GET','POST'))
+@app.route('/authorize', methods=('POST'))
 def home():
-    access_token = request.args.get('code')
-    scrape_activities(access_token)
+    code = request.args.get('code')
+    r = requests.post('https://www.strava.com/oauth/token', data={'client_id':client_id, 'client_secret':client_secret, 'code':code})
+    print r
+    #scrape_activities(access_token)
     return "Got here, did the data appear?"
 
 
