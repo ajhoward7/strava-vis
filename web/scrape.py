@@ -86,6 +86,8 @@ def scrape_activities(access_token):
     with open('scraped_users','w+') as f:
         f.write('{}\n'.format(username))
 
+    return username
+
 
     # ids = get_ids()
     # all_activites = []
