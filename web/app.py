@@ -43,8 +43,8 @@ def home():
 @app.route('/<username>', methods=('GET','POST'))
 def load_activities(username):
 
-    output = process_activities(username)
-    return render_template('plotly_map.html', source=output)
+    output, output2, output3 = process_activities(username)
+    return render_template('plotly_map.html', source=output, source2=output2, source3=output3)
 
 
 if __name__ == '__main__':
