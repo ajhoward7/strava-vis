@@ -1,0 +1,32 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Example
+{% endblock %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'dropdown.html' %}
+    <div class="container">
+        <div class="media">
+            <div class="media-left">
+                <a href="https://www.usfca.edu">
+                <img class="media-object" src={{ url_for('static',filename='usfca.png') }}>
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">University of San Francisco</h4>
+                The University of San Francisco (USF) is a Jesuit Catholic university located in San Francisco, California, United States. 
+                The school's main campus is located on a 55-acre (22 ha) setting between the Golden Gate Bridge and Golden Gate Park. 
+                The main campus is nicknamed "The Hilltop", and part of the main campus is located on Lone Mountain, one of San Francisco's major geographical features. 
+                Its close historical ties with the City and County of San Francisco are reflected in the University's traditional motto, Pro Urbe et Universitate (For the City and University). 
+                The current motto is Change the World From Here. USF's Jesuit Catholic identity is rooted in the vision and work of St. 
+                Ignatius of Loyola, the founder of the Jesuit order.   
+            </div>
+        </div>
+    </div> <!-- /container -->
+{% endblock %}
