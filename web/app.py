@@ -2,15 +2,6 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, redirect, render_template, url_for, flash, request
 from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm
-from flask_login import (current_user, LoginManager, login_required,
-                         login_user, logout_user, UserMixin)
-from wtforms import PasswordField, StringField, SubmitField
-from wtforms.validators import DataRequired, Email
-import os
-
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import check_password_hash, generate_password_hash
 from plotly_example import plotly_map
 
 from scrape import scrape_activities
@@ -48,12 +39,12 @@ def home():
 
     return redirect('/{}'.format(username))
 
+
 @app.route('/<username>', methods=('GET','POST'))
 def load_activities(username):
 
     # Get activities from appropriate folder
     return "Here are some activities"
-
 
 
 if __name__ == '__main__':
