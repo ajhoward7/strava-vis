@@ -84,7 +84,7 @@ def scrape_activities(access_token):
         f.write(json.dumps(user, indent=4))
 
     with open('scraped_users','a+') as f:
-        f.write('{}\n'.format(username))
+        f.write('{} {}\n'.format(user['firstname'],user['lastname']))
 
     return username
 
