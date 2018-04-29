@@ -23,23 +23,16 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     url = 'https://www.strava.com/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2F34.216.241.15%2Fauthorize&client_id=20812'
     return '<a href={}>Click here to authorise</a>'.format(url)
 
 
 @app.route('/plotly_example', methods=('GET', 'POST'))
-@login_required
 def plotly_example():
     output = plotly_map()
     return render_template('plotly_map.html', source=output)
-
-
-@app.route('/', methods=('GET', 'POST'))
-def index():
-    return render_template('index.html',
-                           authenticated_user=current_user.is_authenticated)
 
 
 @app.route('/authorize', methods=('GET','POST'))
