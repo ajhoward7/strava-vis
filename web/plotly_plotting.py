@@ -147,7 +147,6 @@ def process_activities(username):
 
     activities_df['week_start'] = activities_df.date.apply(lambda x: x - timedelta(days=x.weekday()))
     activities_grouped_df_2 = activities_df.groupby(['workout_type', 'week_start'], as_index=False)['miles'].sum()
-    print(activities_df['workout_type'].unique())
 
     by_week_activity_df = pd.DataFrame(activities_grouped_df_2.week_start.unique(), columns=['week_start'])
 
