@@ -73,7 +73,7 @@ def scrape_activities(access_token):
 
     print("Obtaining activity data...")
 
-    activities = client.get_activities(limit=200)
+    activities = client.get_activities(limit=600)
 
     if not os.path.exists(username):
         os.makedirs(username)
