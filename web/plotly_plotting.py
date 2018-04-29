@@ -147,7 +147,7 @@ def process_activities(username):
 
     activities_df['week_start'] = activities_df.date.apply(lambda x: x - timedelta(days=x.weekday()))
     activities_grouped_df_2 = activities_df.groupby(['workout_type', 'week_start'], as_index=False)['miles'].sum()
-    print(activities_df)
+    print(activities_df['workout_type'].unique())
 
     by_week_activity_df = pd.DataFrame(activities_grouped_df_2.week_start.unique(), columns=['week_start'])
 
@@ -159,8 +159,6 @@ def process_activities(username):
                                        left_on=['week_start', '{}'.format(activities_df.workout_type.unique()[i])],
                                        right_on=['week_start', 'workout_type'], how='left',
                                        suffixes=('', '_{}'.format(activities_df.workout_type.unique()[i])))
-
-    print(by_week_ac)
 
     if 'miles_Long Run' not in by_week_activity_df.columns:
         by_week_activity_df['miles_Long Run'] = 0
