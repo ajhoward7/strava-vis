@@ -55,7 +55,8 @@ class StravaRequestor():
                 r = requests.get('https://www.strava.com/api/v3/athlete', params=params)
                 print(r.__dict__)
                 print(r.json()['weight'])
-                #r = requests.get('{}activities'.format(self.base_url), params=params)
+                r = requests.get('{}activities'.format(self.base_url), params=params)
+                print(r.__dict__)
                 activities += r.json()
             except:
                 print("Reached Limit Number of activites")
