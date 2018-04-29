@@ -144,7 +144,7 @@ def index():
     url = 'https://www.strava.com/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2F34.216.241.15%2Fauthorize&client_id=20812'
     #return '<a href={}>Authorisation</a>'.format(url)
     return render_template('index.html',
-                     #      authenticated_user=current_user.is_authenticated)
+                           authenticated_user=current_user.is_authenticated)
 
 @app.route('/authorize', methods=('GET','POST'))
 def home():
