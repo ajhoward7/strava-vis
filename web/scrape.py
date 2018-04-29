@@ -62,7 +62,7 @@ class StravaRequestor():
         return activities
 
     def get_user(self):
-        return requests.get('https://www.strava.com/api/v3/athlete', params=params).json()
+        return requests.get('https://www.strava.com/api/v3/athlete', params=self.params).json()
 
 
 
