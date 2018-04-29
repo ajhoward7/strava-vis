@@ -70,16 +70,6 @@ def scrape_activities(access_token):
     with open(ALL_ACTS_JSON, 'w') as f:
         f.write(json.dumps(activities, indent=4))
 
-    ids = get_ids()
-    all_activites = []
-
-    print("Obtaining Lat-Long data...")
-    for a_id in ids:
-        a = client.get_latlng(a_id)
-        all_activites.append(a)
-    with open(LATLNG_ACTS_JSON, 'w') as f:
-        f.write(json.dumps(all_activites, indent=4))
-
 
 if __name__ == '__main__':
     client = StravaRequestor(TOKEN)
