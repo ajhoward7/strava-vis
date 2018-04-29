@@ -136,7 +136,7 @@ def google_example():
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    url = https://www.strava.com/oauth/authorize?response_type=code&redirect_uri=34.216.241.15&client_id=20812
+    url = 'https://www.strava.com/oauth/authorize?response_type=code&redirect_uri=34.216.241.15&client_id=20812'
     return '<a href={}>Authorisation</a>'.format(url)
     #return render_template('index.html',
                      #      authenticated_user=current_user.is_authenticated)
