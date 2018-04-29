@@ -2,11 +2,7 @@ import requests
 import json
 import os
 
-from credentials import access_token as TOKEN
-from constants import ALL_ACTS_JSON, LATLNG_ACTS_JSON
 from clean import get_ids
-
-import progressbar
 
 
 class StravaRequestor():
