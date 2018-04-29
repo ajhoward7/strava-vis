@@ -69,6 +69,7 @@ def scrape_activities(access_token):
     user = client.get_user()
 
     username = user["firstname"] + '_' + user["lastname"]
+    username = username.lower()
 
     print("Obtaining activity data...")
 
