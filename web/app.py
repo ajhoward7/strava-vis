@@ -151,8 +151,9 @@ def home():
     code = request.args.get('code')
     r = requests.post('https://www.strava.com/oauth/token', data={'client_id':client_id, 'client_secret':client_secret, 'code':code})
     json_data = json.loads(r._content)
-    print(json_data)
-    #scrape_activities(access_token)
+    access_token = json_data["access_token"]
+    print(access_token)
+    scrape_activities(access_token)
     return "Got here, did the data appear?"
 
 
