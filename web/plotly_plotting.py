@@ -2,8 +2,6 @@ import pandas as pd
 from datetime import *
 import numpy as np
 import math
-import plotly.graph_objs as go
-import plotly
 
 import chart_1_scatter
 import chart_2_parallel
@@ -84,14 +82,13 @@ def group_df_2(activities_df):
 
     by_week_activity_df['miles'] = 0
 
-    for i in range(4):
-        print(i)
-        print(by_week_activity_df)
-        print(activities_grouped_df_2)
+    activity_types = activities_df.workout_type.unique()
+    n_activity_types = len(activity_types)
+    for i in range(n_activity_types):
         by_week_activity_df = pd.merge(by_week_activity_df, activities_grouped_df_2,
-                                       left_on=['week_start', '{}'.format(activities_df.workout_type.unique()[i])],
+                                       left_on=['week_start', '{}'.format(activity_types[i])],
                                        right_on=['week_start', 'workout_type'], how='left',
-                                       suffixes=('', '_{}'.format(activities_df.workout_type.unique()[i])))
+                                       suffixes=('', '_{}'.format(activity_types[i])))
 
     if 'miles_Long Run' not in by_week_activity_df.columns:
         by_week_activity_df['miles_Long Run'] = 0
