@@ -85,6 +85,7 @@ def group_df_2(activities_df):
     by_week_activity_df['miles'] = 0
 
     for i in range(4):
+        print(i)
         print(by_week_activity_df)
         print(activities_grouped_df_2)
         by_week_activity_df = pd.merge(by_week_activity_df, activities_grouped_df_2,
