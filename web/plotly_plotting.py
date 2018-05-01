@@ -35,7 +35,6 @@ def preprocess_activities(username):
     activities_df['Distance (Kilometres)'] = activities_df.distance / 1000
 
     activities_df['size'] = activities_df.moving_time.astype('float').apply(lambda x: math.sqrt(x))
-    sizeref = 20 * max(activities_df['size']) / (100 ** 2)
     activities_df['year'] = activities_df.date.apply(lambda x: x.year)
 
     activities_text = []

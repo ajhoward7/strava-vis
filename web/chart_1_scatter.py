@@ -8,6 +8,7 @@ import plotly
 
 def chart_plot(activities_df):
 
+    sizeref = 20 * max(activities_df['size']) / (100 ** 2)
     data = []
     for run_type in ['Run', 'Workout', 'Long Run', 'Race']:
         trace = go.Scatter(
