@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, redirect, render_template, url_for, flash, request
 from flask_bootstrap import Bootstrap
-from plotly_plotting import process_activities
+from plotly_plotting import plot_charts
 
 from scrape import scrape_activities
 from credentials import client_id, client_secret
@@ -40,7 +40,7 @@ def home():
 @app.route('/<username>', methods=('GET','POST'))
 def load_activities(username):
 
-    output, output2, output3 = process_activities(username)
+    output, output2, output3 = plot_charts(username)
     return render_template('plotly_map.html', source=output, source2=output2, source3=output3)
 
 
