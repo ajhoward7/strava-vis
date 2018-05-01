@@ -2,16 +2,20 @@ import pandas as pd
 from datetime import *
 import numpy as np
 import math
-import plotly.plotly  as py
 import plotly.graph_objs as go
-import json
 import plotly
+
+import chart_1_scatter
+import chart_2_parallel
+import chart_3_bar
 
 metres_mile = 1609.34
 workout_type_dict = {0:'Run',1:'Race',2:'Long Run',3:'Workout'}
+days_dict = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 
 
-def process_activities(username):
+def preprocess_activities(username):
+
     activities_df = pd.read_json('{}/activities.json'.format(username))
 
     activities_df = activities_df[
@@ -42,56 +46,10 @@ def process_activities(username):
             row['miles'], row['pace_mile']))
 
     activities_df['text'] = activities_text
+    return activities_df
 
-    data = []
-    for run_type in ['Run', 'Workout', 'Long Run', 'Race']:
-        trace = go.Scatter(
-            x=activities_df['miles'][activities_df['workout_type'] == run_type],
-            y=activities_df['pace_mile'][activities_df['workout_type'] == run_type],
-            mode='markers',
-            hoverinfo='text',
-            opacity=0.8,
-            name=run_type,
-            hovertext=activities_df['text'][activities_df['workout_type'] == run_type],
-            marker=dict(
-                symbol='circle',
-                sizemode='area',
-                sizeref=sizeref,
-                size=activities_df['size'][activities_df['workout_type'] == run_type],
-                line=dict(
-                    width=2
-                ),
-            )
-        )
-        data.append(trace)
 
-    layout = go.Layout(
-        title='Run Summary',
-        hovermode='closest',
-        xaxis=dict(
-            title='Distance (Miles)',
-            gridcolor='rgb(255, 255, 255)',
-            range=[0, 20],
-            zerolinewidth=1,
-            ticklen=5,
-            gridwidth=2,
-        ),
-        yaxis=dict(
-            title='Pace (Seconds per Mile)',
-            gridcolor='rgb(255, 255, 255)',
-            range=[0, 600],
-            zerolinewidth=1,
-            ticklen=5,
-            gridwidth=2,
-        ),
-        paper_bgcolor='rgb(243, 243, 243)',
-        plot_bgcolor='rgb(243, 243, 243)',
-    )
-
-    fig = go.Figure(data=data, layout=layout)
-
-    output = plotly.offline.plot(fig, include_plotlyjs=False,
-                                 output_type='div')
+def group_df(activities_df):
 
     activities_grouped_df = activities_df.groupby(['date'], as_index=False)['miles'].sum()
     activities_grouped_df['dow'] = activities_grouped_df.date.apply(lambda x: x.weekday())
@@ -99,6 +57,7 @@ def process_activities(username):
 
     miles_per_week = activities_grouped_df.groupby(['week_start'], as_index=False).miles.sum()
     by_week_df = pd.DataFrame(activities_grouped_df.week_start.unique(), columns=['week_start'])
+    by_week_df['miles'] = 0
 
     for i in range(7):
         by_week_df['{}'.format(i)] = i
@@ -107,51 +66,24 @@ def process_activities(username):
         by_week_df = pd.merge(by_week_df, activities_grouped_df, left_on=['week_start', '{}'.format(i)],
                               right_on=['week_start', 'dow'], how='left', suffixes=('', '_{}'.format(i)))
 
-    by_week_df = by_week_df[['week_start', 'miles', 'miles_1', 'miles_2', 'miles_3', 'miles_4', 'miles_5', 'miles_6']]
-    by_week_df.columns = ['week_start', 'miles_0', 'miles_1', 'miles_2', 'miles_3', 'miles_4', 'miles_5', 'miles_6']
+    by_week_df = by_week_df[['week_start', 'miles_0', 'miles_1', 'miles_2', 'miles_3', 'miles_4', 'miles_5', 'miles_6']]
     by_week_df['year'] = by_week_df['week_start'].apply(lambda x: x.year)
     by_week_df.fillna(0, inplace=True)
     by_week_df = pd.merge(by_week_df, miles_per_week, how='left', on='week_start')
 
-    days_dict = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+    return activities_grouped_df, by_week_df
 
-    dimensions = list()
 
-    for i in range(7):
-        dimensions.append(
-            dict(range=[0, 20],
-                 constraintrange=[0, 20],
-                 label='{}'.format(days_dict[i]), values=by_week_df['miles_{}'.format(i)]))
+def group_df_2(activities_df):
 
-    data = [
-        go.Parcoords(
-            line=dict(color=by_week_df['miles'],
-                      colorscale='Hot',
-                      showscale=True,
-                      reversescale=True),
-            opacity=0.5,
-            dimensions=dimensions, hoverinfo='text')
-
-    ]
-
-    layout = go.Layout(
-        plot_bgcolor='#E5E5E5',
-        paper_bgcolor='#E5E5E5',
-        title='Miles per week broken down by day'
-    )
-
-    fig = go.Figure(data=data, layout=layout)
-
-    output2 = plotly.offline.plot(fig, include_plotlyjs=False,
-                                 output_type='div')
-
-    activities_df['week_start'] = activities_df.date.apply(lambda x: x - timedelta(days=x.weekday()))
     activities_grouped_df_2 = activities_df.groupby(['workout_type', 'week_start'], as_index=False)['miles'].sum()
 
     by_week_activity_df = pd.DataFrame(activities_grouped_df_2.week_start.unique(), columns=['week_start'])
 
     for i in activities_df.workout_type.unique():
         by_week_activity_df['{}'.format(i)] = i
+
+    by_week_activity_df['miles'] = 0
 
     for i in range(4):
         by_week_activity_df = pd.merge(by_week_activity_df, activities_grouped_df_2,
@@ -163,7 +95,6 @@ def process_activities(username):
         by_week_activity_df['miles_Long Run'] = 0
 
     by_week_activity_df = by_week_activity_df[['week_start', 'miles_Run', 'miles_Workout', 'miles_Long Run', 'miles_Race']]
-    by_week_activity_df.columns = ['week_start', 'miles_Run', 'miles_Workout', 'miles_Long Run', 'miles_Race']
     by_week_activity_df.fillna(0, inplace=True)
 
     by_week_activity_df['miles_Run'] = np.array(by_week_activity_df['miles_Run']) + np.array(
@@ -172,52 +103,24 @@ def process_activities(username):
     by_week_activity_df['miles_Run'] = np.array(by_week_activity_df['miles_Run']) + np.array(
         by_week_activity_df['miles_Long Run'])
 
-    data = []
-    custom_colours = ['blue', 'orange', 'red']
-    j = 0
-    for i in ['Run', 'Workout', 'Race']:
-        data.append(go.Bar(
-            x=by_week_activity_df['week_start'],
-            y=by_week_activity_df['miles_{}'.format(i)],
-            marker=dict(color=custom_colours[j]),
-            name=i))
-        j += 1
+    return activities_grouped_df_2, by_week_activity_df
 
-    layout = dict(
-        barmode='stack',
-        hovermode='closest',
-        title='Miles per week',
-        xaxis=dict(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=1,
-                         label='1m',
-                         step='month',
-                         stepmode='backward'),
-                    dict(count=6,
-                         label='6m',
-                         step='month',
-                         stepmode='backward'),
-                    dict(count=1,
-                         label='YTD',
-                         step='year',
-                         stepmode='todate'),
-                    dict(count=1,
-                         label='1y',
-                         step='year',
-                         stepmode='backward'),
-                    dict(step='all')
-                ])
-            ),
-            rangeslider=dict(),
-            type='date'
-        )
-    )
 
-    fig = go.Figure(data=data, layout=layout)
+def plot_charts(username):
 
-    output3 = plotly.offline.plot(fig, include_plotlyjs=False,
-                                 output_type='div')
+    activities_df = preprocess_activities(username)
 
-    return(output,output2,output3)
+    chart_1 = chart_1_scatter.chart_plot(activities_df)
+
+    activities_grouped_df, by_week_df = group_df(activities_df)
+
+    chart_2 = chart_2_parallel.chart_plot(by_week_df)
+
+    activities_df['week_start'] = activities_df.date.apply(lambda x: x - timedelta(days=x.weekday()))
+
+    activities_grouped_df_2, by_week_activity_df = group_df_2(activities_df)
+
+    chart_3 = chart_3_bar.chart_plot(by_week_activity_df)
+
+    return(chart_1, chart_2, chart_3)
 
