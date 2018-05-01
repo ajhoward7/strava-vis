@@ -93,11 +93,16 @@ def group_df_2(activities_df):
     if 'miles_Long Run' not in by_week_activity_df.columns:
         by_week_activity_df['miles_Long Run'] = 0
 
-    by_week_activity_df = by_week_activity_df[['week_start', 'miles_Run', 'miles_Workout', 'miles_Long Run', 'miles_Race']]
-    by_week_activity_df.fillna(0, inplace=True)
+    if 'miles_Workout' not in by_week_activity_df.columns:
+        by_week_activity_df['miles_Workout'] = 0
 
-    by_week_activity_df['miles_Run'] = np.array(by_week_activity_df['miles_Run']) + np.array(
-        by_week_activity_df['miles_Long Run'])
+    if 'miles_Run' not in by_week_activity_df.columns:
+        by_week_activity_df['miles_Run'] = 0
+
+    if 'miles_Race' not in by_week_activity_df.columns:
+        by_week_activity_df['miles_Race'] = 0
+
+    by_week_activity_df.fillna(0, inplace=True)
 
     by_week_activity_df['miles_Run'] = np.array(by_week_activity_df['miles_Run']) + np.array(
         by_week_activity_df['miles_Long Run'])
