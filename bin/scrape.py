@@ -43,14 +43,13 @@ class StravaRequestor():
         Gets the short activity details and dumps to file
         """
         params = self.params.copy()  # we're editing this so make a copy
-        #params['per_page'] = min(limit, 200)  # 200 is max number of activities we can load in a page
-        #params['page'] = 0
+        params['per_page'] = min(limit, 200)  # 200 is max number of activities we can load in a page
+        params['page'] = 0
         total = 0
         activities = []
         while total < limit:
-            #params['page'] += 1
-            #total += params['per_page']
-            total+=30
+            params['page'] += 1
+            total += params['per_page']
             try:
                 print("got here")
                 r = requests.get('https://www.strava.com/api/v3/athlete', params=params)
@@ -67,7 +66,7 @@ if __name__ == '__main__':
 
     print("Obtaining activity data...")
 
-    activities = client.get_activities(limit=200)
+    activities = client.get_activities(limit=1000)
     with open(ALL_ACTS_JSON, 'w') as f:
         f.write(json.dumps(activities, indent=4))
 
