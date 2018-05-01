@@ -16,7 +16,7 @@ bootstrap = Bootstrap(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    url = 'https://www.strava.com/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2F34.216.241.15%2Fauthorize&client_id=20812'
+    url = 'https://www.strava.com/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2F54.214.153.34%2Fauthorize&client_id=20812'
     return '<a href={}>Click here to authorise</a>'.format(url)
 
 
