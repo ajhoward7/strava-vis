@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c0a99bb4-f4b1-4c9a-b3d0-04339a0b838a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/dash_experiment.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/polyline_play.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/Beta Release.ipynb" afterPath="$PROJECT_DIR$/bin/Beta Release.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/chart_1_scatter.py" afterPath="$PROJECT_DIR$/web/chart_1_scatter.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/plotly_plotting.py" afterPath="$PROJECT_DIR$/web/plotly_plotting.py" />
-    </list>
+    <list default="true" id="c0a99bb4-f4b1-4c9a-b3d0-04339a0b838a" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
