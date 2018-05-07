@@ -1,7 +1,9 @@
 import pandas as pd
+from pandas.io.json import json_normalize
 from datetime import *
 import numpy as np
 import math
+import json
 
 import chart_1_scatter
 import chart_2_parallel
@@ -14,17 +16,19 @@ days_dict = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Frida
 
 def preprocess_activities(username):
 
-    activities_df = pd.read_json('{}/activities.json'.format(username))
+    data = json.load(open('{}/activities.json'.format(username)))
+    activities_df = json_normalize(data)
 
     activities_df = activities_df[
-        ['average_speed', 'distance', 'moving_time', 'name', 'start_date_local', 'id', 'workout_type', 'type']]
+        ['average_speed', 'distance', 'moving_time', 'name', 'start_date_local', 'id', 'workout_type', 'type',
+         'map.summary_polyline']]
     activities_df = activities_df[activities_df.type == 'Run']
 
     activities_df['pace_mile'] = metres_mile / activities_df.average_speed
     activities_df['pace_km'] = 1000 / activities_df.average_speed
 
     activities_df['date'] = pd.to_datetime(activities_df.start_date_local.apply(lambda x: x.split('T')[0]))
-    activities_df.drop(['average_speed', 'start_date_local', 'type', 'id'], axis=1, inplace=True)
+    activities_df.drop(['average_speed', 'start_date_local', 'type'], axis=1, inplace=True)
 
     activities_df.workout_type = activities_df.workout_type.fillna(0)
     activities_df.workout_type = activities_df.workout_type.apply(lambda x: workout_type_dict[x])
@@ -43,6 +47,7 @@ def preprocess_activities(username):
             row['miles'], row['pace_mile']))
 
     activities_df['text'] = activities_text
+    activities_df['week_start'] = activities_df.date.apply(lambda x : x - timedelta(days=x.weekday()))
     return activities_df
 
 
@@ -127,4 +132,7 @@ def plot_charts(username):
     chart_3 = chart_3_bar.chart_plot(by_week_activity_df)
 
     return(chart_1, chart_2, chart_3)
+
+
+
 

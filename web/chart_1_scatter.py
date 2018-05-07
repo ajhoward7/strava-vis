@@ -56,5 +56,6 @@ def chart_plot(activities_df):
 
     fig = go.Figure(data=data, layout=layout)
 
-    return plotly.offline.plot(fig, include_plotlyjs=False,
-                                 output_type='div')
+    #return plotly.offline.plot(fig, include_plotlyjs=False,
+     #                            output_type='div')
+    return fig
